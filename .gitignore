@@ -1,0 +1,3 @@
+# Ignore Docker Compose logs
+logs/
+*.log

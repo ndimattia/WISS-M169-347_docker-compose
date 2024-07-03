@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: nextcloud_db
+    volumes:
+      - nextcloud_db_data:/var/lib/mysql
+    env_file:
+      - nextcloud.env
+    networks:
+      - internal_net
+    ports:
+      - "3306:3306"
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    volumes:
+      - nextcloud_data:/var/www/html
+    env_file:
+      - nextcloud.env
+    networks:
+      - internal_net
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  nextcloud_db_data:
+  nextcloud_data:
+
+networks:
+  internal_net:
+    driver: bridge

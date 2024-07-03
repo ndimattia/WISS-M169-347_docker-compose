@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: gogs_db
+    volumes:
+      - gogs_db_data:/var/lib/mysql
+    env_file:
+      - gogs.env
+    networks:
+      - internal_net_gogs
+    ports:
+      - "3309:3306"
+
+  gogs:
+    image: gogs/gogs
+    container_name: gogs
+    volumes:
+      - gogs_data:/data
+    env_file:
+      - gogs.env
+    networks:
+      - internal_net_gogs
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  gogs_db_data:
+  gogs_data:
+
+networks:
+  internal_net_gogs:
+    driver: bridge

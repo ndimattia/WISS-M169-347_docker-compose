@@ -1,0 +1,3 @@
+[submodule "gogs/test"]
+	path = gogs/test
+	url = http://localhost:3000/n.dimattia/test.git

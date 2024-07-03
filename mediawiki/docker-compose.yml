@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: mediawiki_db
+    volumes:
+      - mediawiki_db_data:/var/lib/mysql
+    env_file:
+      - mediawiki.env
+    networks:
+      - internal_net_mediawiki
+    ports:
+      - "3307:3307"
+
+  mediawiki:
+    image: mediawiki:latest
+    container_name: mediawiki
+    volumes:
+      - mediawiki_data:/var/www/html
+    env_file:
+      - mediawiki.env
+    networks:
+      - internal_net_mediawiki
+    ports:
+      - "8085:80"
+    depends_on:
+      - db
+
+volumes:
+  mediawiki_db_data:
+  mediawiki_data:
+
+networks:
+  internal_net_mediawiki:
+    driver: bridge
